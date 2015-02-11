@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0D665BF9-D09F-41BA-8031-C8156925F79A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDSDKWrapper.Framework</RootNamespace>
+    <AssemblyName>EDSDKWrapper.Framework</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\AEMode.cs" />
+    <Compile Include="Enums\AFMode.cs" />
+    <Compile Include="Enums\ApertureValue.cs" />
+    <Compile Include="Enums\BatteryQuality.cs" />
+    <Compile Include="Enums\Bracket.cs" />
+    <Compile Include="Enums\BracketMode.cs" />
+    <Compile Include="Enums\CameraCommand.cs" />
+    <Compile Include="Enums\CameraState.cs" />
+    <Compile Include="Enums\ColorMatrix.cs" />
+    <Compile Include="Enums\ColorSpace.cs" />
+    <Compile Include="Enums\ComponentId.cs" />
+    <Compile Include="Enums\CompressQuality.cs" />
+    <Compile Include="Enums\Access.cs" />
+    <Compile Include="Enums\DataType.cs" />
+    <Compile Include="Enums\DriveMode.cs" />
+    <Compile Include="Enums\LiveViewAutoFocusMode.cs" />
+    <Compile Include="Enums\ExposureCompensation.cs" />
+    <Compile Include="Enums\FileAttribute.cs" />
+    <Compile Include="Enums\FileCreateDisposition.cs" />
+    <Compile Include="Enums\ImageISOSensitivity.cs" />
+    <Compile Include="Enums\ImageOrientation.cs" />
+    <Compile Include="Enums\ImageQuality.cs" />
+    <Compile Include="Enums\ImageSource.cs" />
+    <Compile Include="Enums\CameraISOSensitivity.cs" />
+    <Compile Include="Enums\MeteringMode.cs" />
+    <Compile Include="Enums\MonochromeFilterEffect.cs" />
+    <Compile Include="Enums\MonochromeTone.cs" />
+    <Compile Include="Enums\ProgressOption.cs" />
+    <Compile Include="Enums\SaveTo.cs" />
+    <Compile Include="Enums\SeekOrigin.cs" />
+    <Compile Include="Enums\ShutterSpeed.cs" />
+    <Compile Include="Enums\StorageType.cs" />
+    <Compile Include="Enums\TargetImageType.cs" />
+    <Compile Include="Enums\TransferOption.cs" />
+    <Compile Include="Enums\ReturnValue.cs" />
+    <Compile Include="Enums\ErrorCodeMask.cs" />
+    <Compile Include="Enums\LiveViewDepthOfFieldPreview.cs" />
+    <Compile Include="Enums\LiveViewDriveLens.cs" />
+    <Compile Include="Enums\LiveViewOutputDevice.cs" />
+    <Compile Include="Enums\LiveViewZoom.cs" />
+    <Compile Include="Enums\FilterEffect.cs" />
+    <Compile Include="Enums\ImageFormat.cs" />
+    <Compile Include="Enums\ImageSize.cs" />
+    <Compile Include="Enums\ObjectEvent.cs" />
+    <Compile Include="Enums\PhotoEffect.cs" />
+    <Compile Include="Enums\PictureStyle.cs" />
+    <Compile Include="Enums\PropertyEvent.cs" />
+    <Compile Include="Enums\PropertyId.cs" />
+    <Compile Include="Enums\StateEvent.cs" />
+    <Compile Include="Enums\TonigEffect.cs" />
+    <Compile Include="Enums\WhiteBalance.cs" />
+    <Compile Include="Exceptions\EDSDKException.cs" />
+    <Compile Include="Invokes\EDSDKInvokes.cs" />
+    <Compile Include="Managers\FrameworkManager.cs" />
+    <Compile Include="Miscellaneous\EnumUtilities.cs" />
+    <Compile Include="Miscellaneous\GlobalConstants.cs" />
+    <Compile Include="Managers\ReturnValueManager.cs" />
+    <Compile Include="Objects\Camera.cs" />
+    <Compile Include="Objects\Image.cs" />
+    <Compile Include="Objects\Item.cs" />
+    <Compile Include="Objects\LiveViewImage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Structs\Capacity.cs" />
+    <Compile Include="Structs\DeviceInformation.cs" />
+    <Compile Include="Structs\DirectoryItemInformation.cs" />
+    <Compile Include="Structs\FocusInformation.cs" />
+    <Compile Include="Structs\FocusPoint.cs" />
+    <Compile Include="Structs\ICCProfile.cs" />
+    <Compile Include="Structs\ImageInformation.cs" />
+    <Compile Include="Structs\ImageQuality.cs" />
+    <Compile Include="Structs\PictureStyleDescription.cs" />
+    <Compile Include="Structs\Point.cs" />
+    <Compile Include="Structs\PropertyDescription.cs" />
+    <Compile Include="Structs\Rational.cs" />
+    <Compile Include="Structs\Rectangle.cs" />
+    <Compile Include="Structs\SaveImageSetting.cs" />
+    <Compile Include="Structs\Size.cs" />
+    <Compile Include="Structs\Time.cs" />
+    <Compile Include="Structs\VolumeInformation.cs" />
+    <Compile Include="Structs\WhiteBalanceBracket.cs" />
+    <Compile Include="Structs\WhiteBalanceShift.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EDSDK_API.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\EDSDK.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\EdsImage.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Readme.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
