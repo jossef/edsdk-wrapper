@@ -747,6 +747,22 @@ namespace EDSDKWrapper.Framework.Objects
             this.LiveViewEnabled = false;
         }
 
+        /// <summary>
+        /// Take a single photo
+        /// </summary>
+        public void TakePhoto()
+        {
+            UInt32 returnValue = EDSDKInvokes.SendCommand(this.Handle, (uint)CameraCommand.TakePicture, 0);
+            ReturnValueManager.HandleFunctionReturnValue(returnValue);
+        }
+
+        public void ShutterPressed(int state)
+        {
+            UInt32 returnValue = EDSDKInvokes.SendCommand(this.Handle, (uint)CameraCommand.PressShutterButton, state);
+            ReturnValueManager.HandleFunctionReturnValue(returnValue);
+
+        }
+
         #endregion
 
 
