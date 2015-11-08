@@ -749,7 +749,8 @@ namespace EDSDKWrapper.Framework.Invokes
         /// <param name="outEvfImageRef">The EVFData reference.</param>
         /// <returns>Any of the <see cref="ReturnValue"/> return values.</returns>
         /// <remarks></remarks>
-        [DllImport("EDSDK.dll", EntryPoint = "EdsCreateEvfImageRef", CallingConvention = CallingConvention.Cdecl)]
+        //[DllImport("EDSDK.dll", EntryPoint = "EdsCreateEvfImageRef", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("EDSDK.dll", EntryPoint = "EdsCreateEvfImageRef")]
         public extern static UInt32 CreateEvfImageRef(IntPtr inStreamRef, out IntPtr outEvfImageRef);
 
         /// <summary>
@@ -766,7 +767,8 @@ namespace EDSDKWrapper.Framework.Invokes
         /// <param name="outEvfImageRef">The EVFData reference.</param>
         /// <returns>Any of the <see cref="ReturnValue"/> return values.</returns>
         /// <remarks></remarks>
-        [DllImport("EDSDK.dll", EntryPoint = "EdsDownloadEvfImage", CallingConvention = CallingConvention.Cdecl)]
+        //[DllImport("EDSDK.dll", EntryPoint = "EdsDownloadEvfImage", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("EDSDK.dll", EntryPoint = "EdsDownloadEvfImage")]
         public extern static UInt32 DownloadEvfImage(IntPtr inCameraRef, IntPtr outEvfImageRef);
 
         #endregion
