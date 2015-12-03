@@ -426,6 +426,11 @@ namespace EDSDKWrapper.Framework.Objects
         }
 
         /// <summary>
+        /// Directory path where the images should be stored.
+        /// </summary>
+        public string ImageSaveDirectory { get; set; }
+
+        /// <summary>
         /// Gets a <c>true</c> value indicating whether a lens is attached, Otherwise <c>false</c>.
         /// </summary>
         /// <remarks>This property can only be retrieved from images shot using models the EOS 50D or EOS 5D Mark II or later.</remarks>
@@ -683,10 +688,19 @@ namespace EDSDKWrapper.Framework.Objects
         /// <remarks></remarks>
         public void StartLiveView()
         {
-            this.LiveViewOutputDevice = Enums.LiveViewOutputDevice.Computer;
             this.LiveViewEnabled = true;
+            this.LiveViewOutputDevice = Enums.LiveViewOutputDevice.Computer;
         }
 
+        /// <summary>
+        /// Starts the live view in the camera.
+        /// </summary>
+        /// <remarks></remarks>
+        public void CameraLiveView()
+        {
+            this.LiveViewEnabled = true;
+            this.LiveViewOutputDevice = Enums.LiveViewOutputDevice.Camera;
+        }
 
         public Stream GetLiveViewImage()
         {
@@ -747,6 +761,22 @@ namespace EDSDKWrapper.Framework.Objects
             this.LiveViewEnabled = false;
         }
 
+        /// <summary>
+        /// Take a single photo
+        /// </summary>
+        public void TakePhoto()
+        {
+            UInt32 returnValue = EDSDKInvokes.SendCommand(this.Handle, (uint)CameraCommand.TakePicture, 0);
+            ReturnValueManager.HandleFunctionReturnValue(returnValue);
+        }
+
+        public void ShutterPressed(int state)
+        {
+            UInt32 returnValue = EDSDKInvokes.SendCommand(this.Handle, (uint)CameraCommand.PressShutterButton, state);
+            ReturnValueManager.HandleFunctionReturnValue(returnValue);
+
+        }
+
         #endregion
 
 
@@ -780,10 +810,67 @@ namespace EDSDKWrapper.Framework.Objects
         private uint objectEventHandler(uint inEvent, IntPtr inRef, IntPtr inContext)
         {
             Console.WriteLine(String.Format("ObjectEventHandler: event {0}, ref {1}", inEvent.ToString("X"), inRef.ToString()));
-
+            switch (inEvent)
+            {
+                case (uint)ObjectEvent.DirItemCreated:
+                    DownloadImage(inRef);
+                    break;
+            }
             return 0x0;
         }
 
+        /// <summary>
+        /// Download image to disk.
+        /// </summary>
+        /// <param name="dirRef">A reference to objects created by the event</param>
+        private void DownloadImage(IntPtr dirRef)
+        {
+            IntPtr stream = IntPtr.Zero;
+            IntPtr data = IntPtr.Zero;
+            DirectoryItemInformation dirItemInfo;
+
+            try
+            {
+                UInt32 returnValue = EDSDKInvokes.GetDirectoryItemInformation(dirRef, out dirItemInfo);
+                ReturnValueManager.HandleFunctionReturnValue(returnValue);
+
+                string fullpath = String.Empty;
+                if (!String.IsNullOrEmpty(ImageSaveDirectory))
+                {
+                    fullpath = System.IO.Path.Combine(ImageSaveDirectory, dirItemInfo.FileName);
+                }
+                else
+                {
+                    fullpath = System.IO.Path.Combine(Environment.CurrentDirectory, dirItemInfo.FileName);
+                }
+                returnValue = EDSDKInvokes.CreateFileStream(fullpath, FileCreateDisposition.CreateAlways, Access.ReadWrite, out stream);
+                ReturnValueManager.HandleFunctionReturnValue(returnValue);
+
+                returnValue = EDSDKInvokes.Download(dirRef, dirItemInfo.Size, stream);
+                ReturnValueManager.HandleFunctionReturnValue(returnValue);
+
+                if(returnValue == (uint )ReturnValue.Ok)
+                {
+                    returnValue = EDSDKInvokes.DownloadComplete(dirRef);
+                }
+                else
+                {
+                    returnValue = EDSDKInvokes.DownloadCancel(dirRef);
+                }
+
+                returnValue = EDSDKInvokes.GetPointer(stream, out data);
+                ReturnValueManager.HandleFunctionReturnValue(returnValue);
+            }
+            catch (Exception ex)
+            {
+                Console.Out.WriteLine(ex.Message);
+            }
+            finally
+            {
+                EDSDKInvokes.Release(stream);
+                EDSDKInvokes.Release(data);
+            }
+        }
 
         #endregion
 
