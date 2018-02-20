@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using EDSDKWrapper.Framework.Invokes;
 using EDSDKWrapper.Framework.Managers;
 using System.Runtime.InteropServices;
 using EDSDKWrapper.Framework.Enums;

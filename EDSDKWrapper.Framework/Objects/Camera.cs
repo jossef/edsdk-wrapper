@@ -1,5 +1,4 @@
 ﻿using System;
-using EDSDKWrapper.Framework.Invokes;
 using EDSDKWrapper.Framework.Managers;
 using EDSDKWrapper.Framework.Enums;
 using EDSDKWrapper.Framework.Structs;
