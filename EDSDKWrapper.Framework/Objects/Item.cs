@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using EDSDKWrapper.Framework.Enums;
 using EDSDKWrapper.Framework.Structs;
 using EDSDKWrapper.Framework.Miscellaneous;
+using EDSDKLib;
 
 namespace EDSDKWrapper.Framework.Objects
 {
@@ -219,7 +220,7 @@ namespace EDSDKWrapper.Framework.Objects
 
             try
             {
-                UInt32 returnValue = EDSDKInvokes.GetPropertyData(this.Handle, (UInt32)propertyId, additionalInformation, bufferSize, allocatedBufferPointer);
+                UInt32 returnValue = EDSDK.EdsGetPropertyData(this.Handle, (UInt32)propertyId, additionalInformation, bufferSize, allocatedBufferPointer);
                 ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
             }
@@ -377,14 +378,14 @@ namespace EDSDKWrapper.Framework.Objects
         /// <remarks></remarks>
         protected IEnumerable<UInt32> GetSupportedProperties(PropertyId propertyId)
         {
-            PropertyDescription propertyDescription;
+            EDSDK.EdsPropertyDesc propertyDescription;
 
-            UInt32 returnValue = EDSDKInvokes.GetPropertyDescription(this.Handle, (UInt32)propertyId, out propertyDescription);
+            UInt32 returnValue = EDSDK.EdsGetPropertyDesc(this.Handle, (UInt32)propertyId, out propertyDescription);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
-            for (int i = 0; i < propertyDescription.Elements.Length ; i++)
+            for (int i = 0; i < propertyDescription.PropDesc.Length ; i++)
             {
-                yield return (UInt32)propertyDescription.Elements[i];
+                yield return (UInt32)propertyDescription.PropDesc[i];
             }
         }
 
@@ -419,7 +420,7 @@ namespace EDSDKWrapper.Framework.Objects
         /// <remarks></remarks>
         private void SetProperty(PropertyId propertyId, int propertySize, object propertyValue, int additionalInformation = 0)
         {
-            UInt32 returnValue = EDSDKInvokes.SetPropertyData(this.Handle, (UInt32)propertyId, additionalInformation, propertySize, propertyValue);
+            UInt32 returnValue = EDSDK.EdsSetPropertyData(this.Handle, (UInt32)propertyId, additionalInformation, propertySize, propertyValue);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
         }
 
@@ -498,7 +499,7 @@ namespace EDSDKWrapper.Framework.Objects
         {
             if (this.Handle != IntPtr.Zero)
             {
-                UInt32 returnValue = EDSDKInvokes.Release(this.Handle);
+                UInt32 returnValue = EDSDK.EdsRelease(this.Handle);
 
                 this.Handle = IntPtr.Zero;
             }

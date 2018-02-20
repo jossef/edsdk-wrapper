@@ -7,6 +7,7 @@ using EDSDKWrapper.Framework.Objects;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using EDSDKLib;
 
 namespace EDSDKWrapper.Framework.Managers
 {
@@ -55,7 +56,7 @@ namespace EDSDKWrapper.Framework.Managers
         /// <remarks></remarks>
         private void initializeSDK()
         {
-            UInt32 returnValue = EDSDKInvokes.InitializeSDK();
+            UInt32 returnValue = EDSDK.EdsInitializeSDK();
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
         }
 
@@ -65,7 +66,7 @@ namespace EDSDKWrapper.Framework.Managers
         /// <remarks></remarks>
         private void terminateSDK()
         {
-            UInt32 returnValue = EDSDKInvokes.TerminateSDK();
+            UInt32 returnValue = EDSDK.EdsTerminateSDK();
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
         }
 
@@ -78,19 +79,19 @@ namespace EDSDKWrapper.Framework.Managers
             UInt32 returnValue;
 
             IntPtr cameraListPointer;
-            returnValue = EDSDKInvokes.GetCameraList(out cameraListPointer);
+            returnValue = EDSDK.EdsGetCameraList(out cameraListPointer);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
             try
             {
                 Int32 cameraListCount;
-                returnValue = EDSDKInvokes.GetChildCount(cameraListPointer, out cameraListCount);
+                returnValue = EDSDK.EdsGetChildCount(cameraListPointer, out cameraListCount);
                 ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
                 for (var i = 0; i < cameraListCount; ++i)
                 {
                     IntPtr cameraPointer;
-                    returnValue = EDSDKInvokes.GetChildAtIndex(cameraListPointer, i, out cameraPointer);
+                    returnValue = EDSDK.EdsGetChildAtIndex(cameraListPointer, i, out cameraPointer);
                     ReturnValueManager.HandleFunctionReturnValue(returnValue);
                     
                     Camera camera = new Camera(cameraPointer);
@@ -103,7 +104,7 @@ namespace EDSDKWrapper.Framework.Managers
                 // Release Camera List Pointer
                 if (cameraListPointer != IntPtr.Zero)
                 {
-                    EDSDKInvokes.Release(cameraListPointer);
+                    EDSDK.EdsRelease(cameraListPointer);
                 }
             }
         }
