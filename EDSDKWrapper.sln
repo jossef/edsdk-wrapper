@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDSDKWrapper.Framework", "EDSDKWrapper.Framework\EDSDKWrapper.Framework.csproj", "{0D665BF9-D09F-41BA-8031-C8156925F79A}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EDSDKWrapper.Framework", "EDSDKWrapper.Framework\EDSDKWrapper.Framework.csproj", "{0D665BF9-D09F-41BA-8031-C8156925F79A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDSDKWrapper.CLI", "EDSDKWrapper.CLI\EDSDKWrapper.CLI.csproj", "{5ED6EF41-FFED-4669-9B3A-3CED12C11BFB}"
 EndProject
@@ -21,9 +23,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDSDKWrapper.UI", "EDSDKWrapper.UI\EDSDKWrapper.UI.csproj", "{CEB4AF23-F678-496C-A272-B805926354E8}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = EDSDKWrapper.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -100,8 +99,14 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D2CC9EFE-71EE-4577-B43F-0A5C5A60A8B8} = {6A6A4085-8120-43CE-8013-A4AAAE112967}
 		{5ED6EF41-FFED-4669-9B3A-3CED12C11BFB} = {6A6A4085-8120-43CE-8013-A4AAAE112967}
+		{D2CC9EFE-71EE-4577-B43F-0A5C5A60A8B8} = {6A6A4085-8120-43CE-8013-A4AAAE112967}
 		{CEB4AF23-F678-496C-A272-B805926354E8} = {6A6A4085-8120-43CE-8013-A4AAAE112967}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B431046C-F994-4473-8D2C-65BBCAD33F77}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = EDSDKWrapper.vsmdi
 	EndGlobalSection
 EndGlobal
