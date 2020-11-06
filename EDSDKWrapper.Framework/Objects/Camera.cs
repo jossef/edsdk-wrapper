@@ -1,11 +1,13 @@
 ﻿using System;
-using EDSDKWrapper.Framework.Invokes;
 using EDSDKWrapper.Framework.Managers;
 using EDSDKWrapper.Framework.Enums;
 using EDSDKWrapper.Framework.Structs;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.IO;
+using EDSDKLib;
+using static EDSDKLib.EDSDK;
+
 namespace EDSDKWrapper.Framework.Objects
 {
     /// <summary>
@@ -647,7 +649,7 @@ namespace EDSDKWrapper.Framework.Objects
         /// <remarks></remarks>
         protected void OpenSession()
         {
-            UInt32 returnValue = EDSDKInvokes.OpenSession(this.Handle);
+            UInt32 returnValue = EDSDK.EdsOpenSession(this.Handle);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
         }
 
@@ -657,7 +659,7 @@ namespace EDSDKWrapper.Framework.Objects
         /// <remarks></remarks>
         protected void CloseSession()
         {
-            UInt32 returnValue = EDSDKInvokes.CloseSession(this.Handle);
+            UInt32 returnValue = EDSDK.EdsCloseSession(this.Handle);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
         }
 
@@ -707,27 +709,27 @@ namespace EDSDKWrapper.Framework.Objects
             IntPtr streamPointer = IntPtr.Zero;
             IntPtr imagePointer = IntPtr.Zero;
 
-            UInt32 returnValue = EDSDKInvokes.CreateMemoryStream(0, out streamPointer);
+            UInt32 returnValue = EDSDK.EdsCreateMemoryStream(0, out streamPointer);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
             try
             {
-                returnValue = EDSDKInvokes.CreateEvfImageRef(streamPointer, out imagePointer);
+                returnValue = EDSDK.EdsCreateEvfImageRef(streamPointer, out imagePointer);
                 ReturnValueManager.HandleFunctionReturnValue(returnValue);
                 try
                 {
 
-                    returnValue = EDSDKInvokes.DownloadEvfImage(this.Handle, imagePointer);
+                    returnValue = EDSDK.EdsDownloadEvfImage(this.Handle, imagePointer);
                     ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
                     IntPtr imageBlob;
-                    returnValue = EDSDKInvokes.GetPointer(streamPointer, out imageBlob);
+                    returnValue = EDSDK.EdsGetPointer(streamPointer, out imageBlob);
                     ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
                     try
                     {
-                        uint imageBlobLength;
-                        returnValue = EDSDKInvokes.GetLength(streamPointer, out imageBlobLength);
+                        ulong imageBlobLength;
+                        returnValue = EDSDK.EdsGetLength(streamPointer, out imageBlobLength);
                         ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
                         byte[] buffer = new byte[imageBlobLength];
@@ -738,17 +740,17 @@ namespace EDSDKWrapper.Framework.Objects
                     }
                     finally
                     {
-                        EDSDKInvokes.Release(imageBlob);
+                        EDSDK.EdsRelease(imageBlob);
                     }
                 }
                 finally
                 {
-                    EDSDKInvokes.Release(imagePointer);
+                    EDSDK.EdsRelease(imagePointer);
                 }
             }
             finally
             {
-                EDSDKInvokes.Release(streamPointer);
+                EDSDK.EdsRelease(streamPointer);
             }
         }
 
@@ -766,13 +768,13 @@ namespace EDSDKWrapper.Framework.Objects
         /// </summary>
         public void TakePhoto()
         {
-            UInt32 returnValue = EDSDKInvokes.SendCommand(this.Handle, (uint)CameraCommand.TakePicture, 0);
+            UInt32 returnValue = EDSDK.EdsSendCommand(this.Handle, (uint)CameraCommand.TakePicture, 0);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
         }
 
         public void ShutterPressed(int state)
         {
-            UInt32 returnValue = EDSDKInvokes.SendCommand(this.Handle, (uint)CameraCommand.PressShutterButton, state);
+            UInt32 returnValue = EDSDK.EdsSendCommand(this.Handle, (uint)CameraCommand.PressShutterButton, state);
             ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
         }
@@ -780,17 +782,17 @@ namespace EDSDKWrapper.Framework.Objects
         #endregion
 
 
-        private EDSDKInvokes.EdsObjectEventHandler m_edsObjectEventHandler;
-        private EDSDKInvokes.EdsPropertyEventHandler m_edsPropertyEventHandler;
-        private EDSDKInvokes.EdsStateEventHandler m_edsStateEventHandler;
+        private EDSDK.EdsObjectEventHandler m_edsObjectEventHandler;
+        private EDSDK.EdsPropertyEventHandler m_edsPropertyEventHandler;
+        private EDSDK.EdsStateEventHandler m_edsStateEventHandler;
 
         #region Event Handling
 
         private void RegisterEventHandlers()
         {
             //  Register OBJECT events
-            m_edsObjectEventHandler = new EDSDKInvokes.EdsObjectEventHandler(objectEventHandler);
-            uint result = EDSDKInvokes.SetObjectEventHandler(
+            m_edsObjectEventHandler = new EDSDK.EdsObjectEventHandler(objectEventHandler);
+            uint result = EDSDK.EdsSetObjectEventHandler(
                     this.Handle, 
                     (uint)ObjectEvent.All,
                     m_edsObjectEventHandler,
@@ -827,38 +829,38 @@ namespace EDSDKWrapper.Framework.Objects
         {
             IntPtr stream = IntPtr.Zero;
             IntPtr data = IntPtr.Zero;
-            DirectoryItemInformation dirItemInfo;
+            EdsDirectoryItemInfo dirItemInfo;
 
             try
             {
-                UInt32 returnValue = EDSDKInvokes.GetDirectoryItemInformation(dirRef, out dirItemInfo);
+                UInt32 returnValue = EDSDK.EdsGetDirectoryItemInfo(dirRef, out dirItemInfo);
                 ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
                 string fullpath = String.Empty;
                 if (!String.IsNullOrEmpty(ImageSaveDirectory))
                 {
-                    fullpath = System.IO.Path.Combine(ImageSaveDirectory, dirItemInfo.FileName);
+                    fullpath = System.IO.Path.Combine(ImageSaveDirectory, dirItemInfo.szFileName);
                 }
                 else
                 {
-                    fullpath = System.IO.Path.Combine(Environment.CurrentDirectory, dirItemInfo.FileName);
+                    fullpath = System.IO.Path.Combine(Environment.CurrentDirectory, dirItemInfo.szFileName);
                 }
-                returnValue = EDSDKInvokes.CreateFileStream(fullpath, FileCreateDisposition.CreateAlways, Access.ReadWrite, out stream);
+                returnValue = EDSDK.EdsCreateFileStream(fullpath, EdsFileCreateDisposition.CreateAlways, EdsAccess.ReadWrite, out stream);
                 ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
-                returnValue = EDSDKInvokes.Download(dirRef, dirItemInfo.Size, stream);
+                returnValue = EDSDK.EdsDownload(dirRef, dirItemInfo.Size, stream);
                 ReturnValueManager.HandleFunctionReturnValue(returnValue);
 
                 if(returnValue == (uint )ReturnValue.Ok)
                 {
-                    returnValue = EDSDKInvokes.DownloadComplete(dirRef);
+                    returnValue = EDSDK.EdsDownloadComplete(dirRef);
                 }
                 else
                 {
-                    returnValue = EDSDKInvokes.DownloadCancel(dirRef);
+                    returnValue = EDSDK.EdsDownloadCancel(dirRef);
                 }
 
-                returnValue = EDSDKInvokes.GetPointer(stream, out data);
+                returnValue = EDSDK.EdsGetPointer(stream, out data);
                 ReturnValueManager.HandleFunctionReturnValue(returnValue);
             }
             catch (Exception ex)
@@ -867,8 +869,8 @@ namespace EDSDKWrapper.Framework.Objects
             }
             finally
             {
-                EDSDKInvokes.Release(stream);
-                EDSDKInvokes.Release(data);
+                EDSDK.EdsRelease(stream);
+                EDSDK.EdsRelease(data);
             }
         }
 
